@@ -2,7 +2,17 @@ from collections import OrderedDict
 from pprint      import pprint
 import sys
 
-json={
+def take(n,l):
+    return l[:n] if n > 0 else l[n:]
+
+def drop(n,l):
+    return l[n:] if n > 0 else l[:n]
+
+def first(l):
+    return take(1,l)[0]
+
+##### Data driven programming example
+json = {
     'Do Standalone Functions': {
         'steps': [
             {
@@ -13,7 +23,7 @@ json={
 
     'Do Things With Class Instance': {
         'class': True,
-        'name': 'Instance',
+        'name': 'ClassExample',
         'args': [1,2,3],
         'steps': [
             {
@@ -35,18 +45,17 @@ json={
         ]
     }
 }
-def take(n,l):
-    return l[:n] if n > 0 else l[n:]
-
-def drop(n,l):
-    return l[n:] if n > 0 else l[:n]
-
-def first(l):
-    return take(1,l)[0]
 
 
-class Instance:
+### Simple Function Example
+def fun():
+    print('having fun')
+    return 'had fun already'
+
+##### Simple Class Example
+class ClassExample:
     def __init__(self,a,b,c):
+        print('doing things with my custom class')
         self.a = a
         self.b = b
         self.c = c
@@ -65,11 +74,7 @@ class Instance:
     def cached_with_args(self, a, b, cached_result):
         return 'I got "{}, {}, {}"'.format(a,b,cached_result)
 
-def fun():
-    print('having fun')
-    return 'had fun already'
-        
-
+##### The test runner consumes json
 class runner:
     def __init__(self, behavior_data):
         self.results = {}
@@ -118,9 +123,5 @@ class runner:
             for obj in process.get('steps'):
                 self.results.get(name)[obj.get('name')] = self.call(obj, i)
         print(self.results)
-
-
-#consume(json)
-#print(results)
 
 runner(json)
